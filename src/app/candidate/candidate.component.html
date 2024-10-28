@@ -1,0 +1,45 @@
+<!-- Título da Tela -->
+<h2 class="page-title text-center my-4">Minhas Inscrições</h2>
+
+<!-- Lista de Inscrições do Candidato -->
+<ul class="list-group mb-5 subscribed-jobs-list">
+  <ng-container *ngFor="let job of subscribedJobs">
+    <li *ngIf="job.job && job.candidate"
+      class="list-group-item d-flex justify-content-between align-items-center shadow-sm mb-3">
+      <div class="job-details">
+        <p class="mb-2">
+          <strong>Vaga:</strong> {{ job.job.title }}
+        </p>
+        <p class="mb-2">
+          <strong>Candidato:</strong> {{ job.candidate.name }}
+        </p>
+        <p class="mb-0">
+          <strong>E-mail:</strong> {{ job.candidate.email }}
+        </p>
+      </div>
+
+      <!-- Área de Ações -->
+      <div class="job-actions d-flex align-items-center">
+        <!-- Botão para Desinscrever-se -->
+        <button class="btn btn-danger btn-sm mr-2" (click)="unsubscribe(job.job.title, job.candidate.email)"
+          style="border-radius: 30px;">
+          <i class="fas fa-times-circle mr-1"></i> Desinscrever-se
+        </button>
+
+        <!-- Botão para Download do Currículo -->
+        <button class="btn btn-primary btn-sm mr-2" (click)="downloadResume(job.candidate.resume)"
+          [disabled]="!job.candidate.resume" style="border-radius: 30px;">
+          <i class="fas fa-download mr-1"></i> Download Currículo
+        </button>
+        <span *ngIf="!job.candidate.resume" class="text-danger small">Currículo não disponível</span>
+      </div>
+    </li>
+  </ng-container>
+</ul>
+
+<!-- Botão para Retornar à Página de Vagas -->
+<div class="text-center">
+  <button class="btn btn-secondary btn-lg return-btn" [routerLink]="['/']" style="border-radius: 30px;">
+    <i class="fas fa-arrow-left mr-2"></i> Retornar à Página de Vagas
+  </button>
+</div>

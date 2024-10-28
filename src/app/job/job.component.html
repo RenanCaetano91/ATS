@@ -1,0 +1,243 @@
+<div class="container-fluid">
+  <div class="row">
+    <!-- Bloco do lado esquerdo da tela com infos sobre ATS -->
+    <div class="col-md-6 px-5">
+      <div class="bg-light p-4 rounded shadow-sm">
+        <h2 class="mb-4 text-center mt-5" style="color: #007bff; font-weight: bold;">Como Funciona um ATS?</h2>
+        <p class="text-center mb-3" style="font-size: 1.1rem; line-height: 1.5;">
+          O ATS atua como uma plataforma abrangente de recrutamento e contratação. Ele permite que você publique vagas
+          em portais e redes sociais automaticamente e receba currículos, que são armazenados e padronizados para
+          facilitar a comparação com a descrição da vaga.
+        </p>
+        <p class="text-center mb-3" style="font-size: 1.1rem; line-height: 1.5;">
+          O sistema também possibilita o uso de questionários automatizados, chats para discussão entre equipes de
+          recrutamento e acompanhamento do status dos candidatos por meio de um funil. Isso garante maior transparência
+          e comunicação durante o processo seletivo.
+        </p>
+        <p class="text-center mb-3" style="font-size: 1.1rem; line-height: 1.5;">
+          No final do processo, o ATS pode enviar propostas automaticamente e iniciar o onboarding, facilitando uma
+          jornada de admissão totalmente eletrônica.
+        </p>
+      </div>
+    </div>
+
+    <!-- Bloco do lado direito da tela com infos sobre as vagas -->
+<div class="col-md-6 px-5">
+  <div class="bg-light p-4 rounded shadow-sm">
+    <h2 class="mb-4 text-center mt-5" style="color: #007bff; font-weight: bold;">Vagas Disponíveis</h2>
+
+    <!-- Lista de Vagas -->
+    <ul class="list-group mb-5">
+      <li class="list-group-item d-flex justify-content-between align-items-center p-4 rounded shadow-sm mb-3"
+        style="background-color: #f9f9f9; border-left: 5px solid #007bff;" *ngFor="let job of jobs">
+        <div>
+          <h5 style="font-weight: bold; color: #343a40;">{{ job.title }}</h5>
+          <p class="mb-1 text-muted">{{ job.location }} - 
+            <span class="badge badge-info" style="font-size: 0.85rem;">{{ job.status }}</span>
+          </p>          
+        </div>
+        <div class="d-flex align-items-center">
+          <!-- Botão de inscrever-se na vaga -->
+          <button (click)="openModal(job.jobId)" class="btn btn-success btn-lg mr-3"
+            style="border-radius: 30px; padding: 0.5rem 1.5rem; font-size: 0.9rem; display: flex; align-items: center;"
+            [disabled]="job.status === 'Fechado'">
+            <i class="fas fa-user-plus mr-2"></i> Inscrever-se
+          </button>
+
+          <!-- Botão de editar vaga -->
+          <button (click)="openEditJobModal(job)" class="btn btn-warning btn-md mr-3"
+            style="border-radius: 30px; padding: 0.4rem 1rem; font-size: 0.85rem; display: flex; align-items: center;">
+            <i class="fas fa-edit mr-1"></i> Editar
+          </button>
+          <!-- Botão de excluir vaga -->
+          <button (click)="deleteJob(job.jobId)" class="btn btn-danger btn-md">
+            <i class="fas fa-trash-alt mr-1"></i> Excluir
+          </button>
+        </div>
+      </li>
+    </ul>
+
+
+        <!-- Botões de ações gerais -->
+        <div class="d-flex justify-content-between mb-4">
+          <!-- Botão para abrir o modal de criar nova vaga -->
+          <button class="btn btn-primary btn-lg" style="border-radius: 30px; padding: 0.5rem 1.5rem;"
+            (click)="openAddJobModal()">
+            <i class="fas fa-plus mr-2"></i> Adicionar Nova Vaga
+          </button>
+
+          <!-- Botão que direciona para a tela de candidatos -->
+          <button class="btn btn-secondary btn-lg" style="border-radius: 30px; padding: 0.5rem 1.5rem;"
+            [routerLink]="['/candidate']">
+            <i class="fas fa-users mr-2"></i> Ir para Página do Candidato
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal de adicionar nova vaga -->
+      <div class="modal fade" tabindex="-1" role="dialog" [ngClass]="{'show': showAddJobModal}" *ngIf="showAddJobModal">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content shadow-lg border-0 rounded">
+            <div class="modal-header bg-success text-white">
+              <h5 class="modal-title">
+                <i class="fas fa-plus-circle mr-2"></i> Adicionar Nova Vaga
+              </h5>
+              <button type="button" class="close text-white" (click)="closeAddJobModal()" aria-label="Fechar">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <!-- Título da Vaga -->
+                <div class="form-group">
+                  <label for="newJobTitle" class="font-weight-bold">Título da Vaga</label>
+                  <input id="newJobTitle" type="text" class="form-control" placeholder="Digite o título da vaga"
+                    [(ngModel)]="newJobTitle" name="newJobTitle" required>
+                </div>
+
+                <!-- Local da Vaga -->
+                <div class="form-group">
+                  <label for="newJobLocation" class="font-weight-bold">Localização</label>
+                  <input id="newJobLocation" type="text" class="form-control" placeholder="Digite a localização"
+                    [(ngModel)]="newJobLocation" name="newJobLocation" required>
+                </div>
+
+                <!-- Status da Vaga -->
+                <div class="form-group">
+                  <label for="newJobStatus" class="font-weight-bold">Status da Vaga</label>
+                  <select id="newJobStatus" class="form-control" [(ngModel)]="newJobStatus" name="newJobStatus"
+                    required>
+                    <option value="Aberto">Aberto</option>
+                    <option value="Fechado">Fechado</option>
+                  </select>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-success btn-lg" (click)="addJob()" style="border-radius: 30px;">
+                <i class="fas fa-save mr-2"></i> Salvar
+              </button>
+              <button type="button" class="btn btn-secondary btn-lg" (click)="closeAddJobModal()"
+                style="border-radius: 30px;">
+                <i class="fas fa-times-circle mr-2"></i> Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal para editar vaga -->
+      <div class="modal fade" tabindex="-1" role="dialog" [ngClass]="{'show': showEditJobModal}"
+        *ngIf="showEditJobModal">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content shadow-lg border-0 rounded">
+            <div class="modal-header bg-warning text-dark">
+              <h5 class="modal-title">
+                <i class="fas fa-edit mr-2"></i> Editar Vaga: {{ editJobTitle }}
+              </h5>
+              <button type="button" class="close text-dark" (click)="closeEditJobModal()" aria-label="Fechar">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <!-- Título da Vaga -->
+                <div class="form-group">
+                  <label for="editJobTitle" class="font-weight-bold">Título da Vaga</label>
+                  <input id="editJobTitle" type="text" class="form-control" placeholder="Digite o título da vaga"
+                    [(ngModel)]="editJobTitle" name="editJobTitle"> <!-- Adicione o atributo name -->
+                </div>
+
+                <!-- Localização da Vaga -->
+                <div class="form-group">
+                  <label for="editJobLocation" class="font-weight-bold">Localização</label>
+                  <input id="editJobLocation" type="text" class="form-control" placeholder="Digite a localização"
+                    [(ngModel)]="editJobLocation" name="editJobLocation">
+                </div>
+
+                <!-- Status da Vaga -->
+                <div class="form-group">
+                  <label for="editJobStatus" class="font-weight-bold">Status</label>
+                  <select id="editJobStatus" class="form-control" [(ngModel)]="editJobStatus" name="editJobStatus">
+                    <!-- Adicione o atributo name -->
+                    <option value="Aberto">Aberto</option>
+                    <option value="Fechado">Fechado</option>
+                  </select>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary btn-lg" (click)="updateJobs()" style="border-radius: 30px;">
+                <i class="fas fa-save mr-2"></i> Salvar Alterações
+              </button>
+              <button type="button" class="btn btn-secondary btn-lg" (click)="closeEditJobModal()"
+                style="border-radius: 30px;">
+                <i class="fas fa-times-circle mr-2"></i> Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal de inscrição na vaga -->
+      <div class="modal fade" tabindex="-1" role="dialog" [ngClass]="{'show': showModal}" *ngIf="showModal">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content shadow-lg border-0 rounded">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title">
+                <i class="fas fa-user-plus mr-2"></i> Inscrição na Vaga: {{ getJobTitle(selectedJobId) }}
+              </h5>
+              <button type="button" class="close text-white" (click)="closeModal()" aria-label="Fechar">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <!-- Nome do Candidato -->
+                <div class="form-group">
+                  <label for="candidateName" class="font-weight-bold">Nome Completo</label>
+                  <input id="candidateName" type="text" class="form-control" placeholder="Digite seu nome completo"
+                    [(ngModel)]="candidateName" name="candidateName" required>
+                </div>
+
+                <!-- Email do Candidato -->
+                <div class="form-group">
+                  <label for="candidateEmail" class="font-weight-bold">Email</label>
+                  <input id="candidateEmail" type="email" class="form-control" placeholder="Digite seu email"
+                    [(ngModel)]="candidateEmail" name="candidateEmail" required>
+                </div>
+
+                <!-- Telefone do Candidato -->
+                <div class="form-group">
+                  <label for="candidatePhone" class="font-weight-bold">Telefone</label>
+                  <input id="candidatePhone" type="text" class="form-control" placeholder="Digite seu telefone"
+                    [(ngModel)]="candidatePhone" name="candidatePhone" required>
+                </div>
+
+                <!-- Upload de Currículo -->
+                <div class="form-group">
+                  <label for="resumeUpload" class="font-weight-bold">Anexar Currículo</label>
+                  <div class="custom-file">
+                    <input id="resumeUpload" type="file" class="custom-file-input" (change)="onFileChange($event)">
+                    <label class="custom-file-label" for="resumeUpload">Escolha o arquivo</label>
+                  </div>
+                  <small class="form-text text-muted">Formatos aceitos: PDF, DOCX</small>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary btn-lg" (click)="subscribeToJob(selectedJobId)"
+                style="border-radius: 30px;">
+                <i class="fas fa-paper-plane mr-2"></i> Inscrever-se
+              </button>
+              <button type="button" class="btn btn-secondary btn-lg" (click)="closeModal()"
+                style="border-radius: 30px;">
+                <i class="fas fa-times-circle mr-2"></i> Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

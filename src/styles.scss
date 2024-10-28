@@ -1,1 +1,68 @@
-/* You can add global styles to this file, and also import other style files */
+form {
+    margin-bottom: 20px;
+  }
+  
+  form div {
+    margin-bottom: 10px;
+  }
+  
+  input, select {
+    padding: 5px;
+    width: 300px;
+    max-width: 100%;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  ul li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  ul li button {
+    background-color: #dc3545;
+  }
+  
+  ul li button:hover {
+    background-color: #c82333;
+  }
+  .modal {
+    display: none; /* Oculta o modal por padrão */
+  }
+  
+  .modal.show {
+    display: block; /* Exibe o modal quando a classe 'show' é aplicada */
+    background-color: rgba(0, 0, 0, 0.5); /* Adiciona um fundo semitransparente */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1050; /* Certifique-se de que o modal tenha uma camada alta no z-index */
+  }
+  
+  .modal-dialog {
+    position: relative;
+    margin: 10% auto;
+    width: 80%;
+    max-width: 500px;
+  }
+  
+  

@@ -1,0 +1,48 @@
+.page-title {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+.subscribed-jobs-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 600px;
+
+  .job-item {
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .job-details {
+      margin-bottom: 10px;
+
+      p {
+        margin: 3px 0;
+        line-height: 1.5;
+      }
+    }
+
+    .unsubscribe-btn {
+      align-self: flex-end;
+      /* coloca o botão para o lado direito */
+      padding: 6px 10px;
+      font-size: 0.85rem;
+      border-radius: 3px;
+    }
+  }
+}
+
+.return-btn {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 1rem;
+}
